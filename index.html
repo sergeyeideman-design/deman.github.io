@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Артур Амирханян — Русский язык как иностранный</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root{--primary:#1a1a2e;--secondary:#16213e;--accent:#e94560;--accent-light:#ff6b6b;--gold:#c9a227;--cream:#f5f0e8;--white:#fff;--gray:#6c757d;--light-gray:#e9ecef;--dark:#0f0f23}
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--primary);line-height:1.7;overflow-x:hidden}
+        .preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--dark);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s,visibility .6s}
+        .preloader.hidden{opacity:0;visibility:hidden}
+        .preloader-text{font-family:'Playfair Display',serif;font-size:2rem;color:var(--white);letter-spacing:4px;animation:pulse 1.5s infinite}
+        @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+        nav{position:fixed;top:0;width:100%;padding:20px 5%;display:flex;justify-content:space-between;align-items:center;z-index:1000;transition:all .4s}
+        nav.scrolled{background:rgba(26,26,46,.95);backdrop-filter:blur(20px);padding:15px 5%;box-shadow:0 4px 30px rgba(0,0,0,.3)}
+        .logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;color:var(--white);text-decoration:none;letter-spacing:1px}
+        .logo span{color:var(--accent)}
+        .nav-links{display:flex;gap:35px;list-style:none}
+        .nav-links a{color:var(--white);text-decoration:none;font-size:.9rem;font-weight:500;letter-spacing:.5px;position:relative;transition:color .3s}
+        .nav-links a::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s}
+        .nav-links a:hover::after{width:100%}
+        .nav-links a:hover{color:var(--accent-light)}
+        .mobile-menu-btn{display:none;background:none;border:none;color:var(--white);font-size:1.5rem;cursor:pointer}
+        .hero{min-height:100vh;background:linear-gradient(135deg,var(--dark) 0%,var(--primary) 50%,var(--secondary) 100%);display:flex;align-items:center;padding:120px 5% 80px;position:relative;overflow:hidden}
+        .hero::before{content:'';position:absolute;top:-50%;right:-20%;width:800px;height:800px;background:radial-gradient(circle,rgba(233,69,96,.08) 0%,transparent 70%);border-radius:50%;animation:float 8s infinite}
+        .hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(201,162,39,.06) 0%,transparent 70%);border-radius:50%;animation:float 10s infinite reverse}
+        @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-30px)}}
+        .hero-container{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%;position:relative;z-index:1}
+        .hero-content{animation:fadeInUp 1s ease-out}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+        .hero-badge{display:inline-block;padding:8px 20px;background:rgba(233,69,96,.15);border:1px solid rgba(233,69,96,.3);border-radius:50px;color:var(--accent-light);font-size:.8rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:25px}
+        .hero h1{font-family:'Playfair Display',serif;font-size:4rem;font-weight:600;color:var(--white);line-height:1.1;margin-bottom:20px}
+        .hero h1 .highlight{color:var(--accent);font-style:italic}
+        .hero-subtitle{font-size:1.3rem;color:rgba(255,255,255,.7);font-weight:300;margin-bottom:15px;letter-spacing:1px}
+        .hero-desc{font-size:1rem;color:rgba(255,255,255,.6);max-width:500px;margin-bottom:40px;line-height:1.8}
+        .hero-buttons{display:flex;gap:20px;flex-wrap:wrap}
+        .btn{padding:16px 40px;border-radius:50px;font-size:.95rem;font-weight:600;letter-spacing:.5px;text-decoration:none;transition:all .4s;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:10px}
+        .btn-primary{background:var(--accent);color:var(--white);box-shadow:0 10px 40px rgba(233,69,96,.4)}
+        .btn-primary:hover{background:var(--accent-light);transform:translateY(-3px);box-shadow:0 15px 50px rgba(233,69,96,.5)}
+        .btn-outline{background:transparent;color:var(--white);border:2px solid rgba(255,255,255,.3)}
+        .btn-outline:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px)}
+        .hero-image{position:relative;animation:fadeInUp 1s ease-out .3s both}
+        .hero-image-wrapper{position:relative;width:100%;max-width:450px;margin:0 auto}
+        .hero-image-wrapper::before{content:'';position:absolute;inset:-20px;border:2px solid rgba(201,162,39,.3);border-radius:30px;transform:rotate(-3deg);animation:borderRotate 6s infinite}
+        @keyframes borderRotate{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+        .hero-image-wrapper::after{content:'';position:absolute;inset:-40px;border:1px solid rgba(233,69,96,.15);border-radius:40px;transform:rotate(5deg)}
+        .hero-image img{width:100%;border-radius:25px;display:block;position:relative;z-index:1;box-shadow:0 30px 60px rgba(0,0,0,.4);filter:brightness(1.05) contrast(1.05)}
+        .hero-stats{position:absolute;bottom:-30px;left:-30px;background:var(--white);padding:20px 30px;border-radius:20px;box-shadow:0 20px 50px rgba(0,0,0,.2);z-index:2;animation:fadeInUp 1s ease-out .6s both}
+        .hero-stats-number{font-size:2rem;font-weight:800;color:var(--accent);line-height:1}
+        .hero-stats-text{font-size:.8rem;color:var(--gray);margin-top:5px}
+        .scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;color:rgba(255,255,255,.5);font-size:.75rem;letter-spacing:2px;text-transform:uppercase;animation:bounce 2s infinite}
+        @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(10px)}}
+        .scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--accent),transparent)}
+        section{padding:100px 5%}
+        .section-header{text-align:center;max-width:700px;margin:0 auto 60px}
+        .section-label{display:inline-block;padding:6px 18px;background:rgba(233,69,96,.1);border-radius:50px;color:var(--accent);font-size:.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:15px}
+        .section-title{font-family:'Playfair Display',serif;font-size:3rem;font-weight:600;color:var(--primary);margin-bottom:15px;line-height:1.2}
+        .section-subtitle{font-size:1.1rem;color:var(--gray);font-weight:300}
+        .about{background:var(--white)}
+        .about-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+        .about-image{position:relative}
+        .about-image img{width:100%;border-radius:20px;box-shadow:0 30px 60px rgba(0,0,0,.15)}
+        .about-image::before{content:'';position:absolute;top:30px;left:-30px;width:100%;height:100%;border:3px solid var(--gold);border-radius:20px;z-index:-1}
+        .about-content h3{font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:20px;color:var(--primary)}
+        .about-content p{color:var(--gray);margin-bottom:20px;font-size:1rem}
+        .about-features{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:30px}
+        .about-feature{display:flex;align-items:flex-start;gap:15px}
+        .about-feature-icon{width:45px;height:45px;background:linear-gradient(135deg,var(--accent),var(--accent-light));border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1.2rem;flex-shrink:0}
+        .about-feature-text h4{font-size:.95rem;font-weight:600;margin-bottom:5px}
+        .about-feature-text p{font-size:.85rem;margin:0}
+        .services{background:var(--cream)}
+        .services-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+        .service-card{background:var(--white);border-radius:24px;padding:40px 30px;text-align:center;transition:all .4s;position:relative;overflow:hidden;border:1px solid rgba(0,0,0,.05)}
+        .service-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--accent),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .4s}
+        .service-card:hover::before{transform:scaleX(1)}
+        .service-card:hover{transform:translateY(-10px);box-shadow:0 30px 60px rgba(0,0,0,.1)}
+        .service-icon{width:70px;height:70px;background:linear-gradient(135deg,var(--accent),var(--accent-light));border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 25px;font-size:1.8rem;color:var(--white)}
+        .service-card h3{font-size:1.3rem;font-weight:700;margin-bottom:15px;color:var(--primary)}
+        .service-card p{color:var(--gray);font-size:.95rem;line-height:1.7}
+        .service-price{margin-top:20px;padding-top:20px;border-top:1px solid var(--light-gray)}
+        .service-price span{font-size:1.5rem;font-weight:800;color:var(--accent)}
+        .service-price small{display:block;color:var(--gray);font-size:.8rem;margin-top:5px}
+        .levels{background:var(--primary);color:var(--white);position:relative;overflow:hidden}
+        .levels::before{content:'';position:absolute;top:0;right:0;width:500px;height:500px;background:radial-gradient(circle,rgba(233,69,96,.1) 0%,transparent 70%)}
+        .levels .section-title{color:var(--white)}
+        .levels .section-subtitle{color:rgba(255,255,255,.6)}
+        .levels-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+        .level-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:35px 25px;text-align:center;transition:all .4s;backdrop-filter:blur(10px)}
+        .level-card:hover{background:rgba(255,255,255,.1);transform:translateY(-5px);border-color:var(--accent)}
+        .level-badge{width:60px;height:60px;background:linear-gradient(135deg,var(--accent),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.3rem;font-weight:800;color:var(--white)}
+        .level-card h4{font-size:1.1rem;margin-bottom:10px}
+        .level-card p{font-size:.85rem;color:rgba(255,255,255,.6)}
+        .methodology{background:var(--white)}
+        .methodology-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:40px}
+        .method-card{display:flex;gap:25px;padding:35px;background:var(--cream);border-radius:20px;transition:all .3s}
+        .method-card:hover{background:var(--white);box-shadow:0 20px 50px rgba(0,0,0,.08);transform:translateY(-5px)}
+        .method-number{font-family:'Playfair Display',serif;font-size:3rem;font-weight:600;color:var(--accent);line-height:1;opacity:.3}
+        .method-content h4{font-size:1.2rem;font-weight:700;margin-bottom:10px;color:var(--primary)}
+        .method-content p{color:var(--gray);font-size:.95rem}
+        .testimonials{background:linear-gradient(135deg,var(--cream) 0%,var(--white) 100%)}
+        .testimonials-slider{max-width:900px;margin:0 auto;position:relative}
+        .testimonial-card{background:var(--white);border-radius:30px;padding:50px;box-shadow:0 20px 60px rgba(0,0,0,.08);text-align:center;position:relative}
+        .testimonial-card::before{content:'"';font-family:'Playfair Display',serif;font-size:8rem;color:var(--accent);opacity:.1;position:absolute;top:-20px;left:30px;line-height:1}
+        .testimonial-text{font-size:1.2rem;font-style:italic;color:var(--primary);margin-bottom:30px;line-height:1.8;position:relative;z-index:1}
+        .testimonial-author{display:flex;align-items:center;justify-content:center;gap:15px}
+        .testimonial-avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--gold));display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:1.2rem}
+        .testimonial-info h4{font-size:1rem;font-weight:700;color:var(--primary)}
+        .testimonial-info p{font-size:.85rem;color:var(--gray)}
+        .testimonial-flag{font-size:1.5rem;margin-left:5px}
+        .testimonial-dots{display:flex;justify-content:center;gap:10px;margin-top:30px}
+        .dot{width:12px;height:12px;border-radius:50%;background:var(--light-gray);cursor:pointer;transition:all .3s}
+        .dot.active{background:var(--accent);width:30px;border-radius:6px}
+        .cta{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:var(--white);text-align:center;position:relative;overflow:hidden}
+        .cta::before{content:'';position:absolute;top:-100px;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(233,69,96,.15) 0%,transparent 70%)}
+        .cta::after{content:'';position:absolute;bottom:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(201,162,39,.1) 0%,transparent 70%)}
+        .cta-content{position:relative;z-index:1;max-width:700px;margin:0 auto}
+        .cta h2{font-family:'Playfair Display',serif;font-size:3rem;margin-bottom:20px}
+        .cta p{font-size:1.1rem;color:rgba(255,255,255,.7);margin-bottom:40px}
+        .cta-buttons{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+        .btn-telegram{background:#0088cc;color:var(--white);box-shadow:0 10px 40px rgba(0,136,204,.4)}
+        .btn-telegram:hover{background:#0099e6;transform:translateY(-3px)}
+        .btn-whatsapp{background:#25d366;color:var(--white);box-shadow:0 10px 40px rgba(37,211,102,.4)}
+        .btn-whatsapp:hover{background:#2ee676;transform:translateY(-3px)}
+        .contact{background:var(--white)}
+        .contact-container{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px}
+        .contact-info h3{font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:20px}
+        .contact-info>p{color:var(--gray);margin-bottom:30px}
+        .contact-item{display:flex;align-items:center;gap:15px;margin-bottom:20px;padding:15px 20px;background:var(--cream);border-radius:15px;transition:all .3s}
+        .contact-item:hover{background:var(--primary);color:var(--white)}
+        .contact-item:hover .contact-icon{background:var(--accent)}
+        .contact-item:hover p{color:rgba(255,255,255,.8)}
+        .contact-icon{width:45px;height:45px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1.1rem;flex-shrink:0;transition:all .3s}
+        .contact-item div h4{font-size:.9rem;font-weight:600;margin-bottom:3px}
+        .contact-item div p{font-size:.85rem;color:var(--gray);margin:0;transition:color .3s}
+        .contact-form{background:var(--cream);padding:40px;border-radius:24px}
+        .form-group{margin-bottom:20px}
+        .form-group label{display:block;font-size:.85rem;font-weight:600;margin-bottom:8px;color:var(--primary)}
+        .form-group input,.form-group select,.form-group textarea{width:100%;padding:14px 18px;border:2px solid var(--light-gray);border-radius:12px;font-family:'Montserrat',sans-serif;font-size:.95rem;background:var(--white);transition:all .3s;color:var(--primary)}
+        .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(233,69,96,.1)}
+        .form-group textarea{resize:vertical;min-height:120px}
+        .form-submit{width:100%;padding:16px;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:var(--white);border:none;border-radius:12px;font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all .3s}
+        .form-submit:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(233,69,96,.4)}
+        footer{background:var(--dark);color:var(--white);padding:60px 5% 30px}
+        .footer-container{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+        .footer-brand h3{font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:15px}
+        .footer-brand h3 span{color:var(--accent)}
+        .footer-brand p{color:rgba(255,255,255,.6);font-size:.9rem;line-height:1.7}
+        .footer-links h4{font-size:.9rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;color:var(--accent-light)}
+        .footer-links ul{list-style:none}
+        .footer-links li{margin-bottom:12px}
+        .footer-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.9rem;transition:color .3s}
+        .footer-links a:hover{color:var(--accent)}
+        .footer-social{display:flex;gap:15px;margin-top:20px}
+        .footer-social a{width:40px;height:40px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);text-decoration:none;font-size:1rem;transition:all .3s}
+        .footer-social a:hover{background:var(--accent);transform:translateY(-3px)}
+        .footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;text-align:center;color:rgba(255,255,255,.4);font-size:.85rem}
+        .floating-buttons{position:fixed;bottom:30px;right:30px;display:flex;flex-direction:column;gap:15px;z-index:999}
+        .floating-btn{width:55px;height:55px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:1.4rem;text-decoration:none;box-shadow:0 5px 20px rgba(0,0,0,.3);transition:all .3s;position:relative}
+        .floating-btn:hover{transform:scale(1.1) translateY(-3px)}
+        .floating-btn.telegram{background:#0088cc}
+        .floating-btn.whatsapp{background:#25d366}
+        .floating-btn::before{content:attr(data-label);position:absolute;right:65px;background:var(--primary);color:var(--white);padding:8px 15px;border-radius:8px;font-size:.8rem;font-weight:600;white-space:nowrap;opacity:0;visibility:hidden;transition:all .3s}
+        .floating-btn:hover::before{opacity:1;visibility:visible}
+        .reveal{opacity:0;transform:translateY(40px);transition:all .8s}
+        .reveal.active{opacity:1;transform:translateY(0)}
+        @media(max-width:1024px){.hero-container{grid-template-columns:1fr;text-align:center;gap:50px}.hero-content{order:2}.hero-image{order:1}.hero h1{font-size:3rem}.hero-desc{margin:0 auto 40px}.hero-buttons{justify-content:center}.hero-stats{left:50%;transform:translateX(-50%)}.about-container{grid-template-columns:1fr;gap:50px}.about-image::before{display:none}.services-grid{grid-template-columns:repeat(2,1fr)}.levels-grid{grid-template-columns:repeat(2,1fr)}.methodology-grid{grid-template-columns:1fr}.contact-container{grid-template-columns:1fr}.footer-container{grid-template-columns:1fr 1fr}}
+        @media(max-width:768px){.nav-links{display:none;position:absolute;top:100%;left:0;width:100%;background:rgba(26,26,46,.98);flex-direction:column;padding:20px;gap:20px}.nav-links.active{display:flex}.mobile-menu-btn{display:block}.hero{padding:100px 5% 60px}.hero h1{font-size:2.2rem}.hero-subtitle{font-size:1rem}.section-title{font-size:2rem}.services-grid{grid-template-columns:1fr}.levels-grid{grid-template-columns:1fr}.testimonial-card{padding:30px 20px}.testimonial-text{font-size:1rem}.cta h2{font-size:2rem}.footer-container{grid-template-columns:1fr;text-align:center}.footer-social{justify-content:center}.floating-buttons{bottom:20px;right:20px}}
+    </style>
+</head>
+<body>
+    <div class="preloader" id="preloader"><div class="preloader-text">Артур Амирханян</div></div>
+    <nav id="navbar">
+        <a href="#" class="logo">Артур <span>Амирханян</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">Обо мне</a></li>
+            <li><a href="#services">Услуги</a></li>
+            <li><a href="#levels">Уровни</a></li>
+            <li><a href="#methodology">Методика</a></li>
+            <li><a href="#testimonials">Отзывы</a></li>
+            <li><a href="#contact">Контакты</a></li>
+        </ul>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">Преподаватель РКИ</div>
+                <h1>Говорите по-русски<br><span class="highlight">уверенно и красиво</span></h1>
+                <p class="hero-subtitle">Индивидуальные занятия русского языка как иностранного</p>
+                <p class="hero-desc">Помогаю иностранным студентам, экспатам и профессионалам овладеть русским языком на глубоком уровне. От первых фраз до свободного общения и подготовки к экзаменам ТРКИ.</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary">Записаться на урок</a>
+                    <a href="#about" class="btn btn-outline">Узнать больше</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-image-wrapper">
+                    <img src="амирханян.jpg" alt="Артур Амирханян">
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stats-number">500+</div>
+                    <div class="hero-stats-text">студентов из 30 стран</div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Листайте вниз</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-container reveal">
+            <div class="about-image">
+                <img src="амирханян.jpg" alt="Артур Амирханян">
+            </div>
+            <div class="about-content">
+                <div class="section-label">Обо мне</div>
+                <h3>Преподаю русский язык с душой и профессионализмом</h3>
+                <p>Меня зовут Артур Амирханян, и я — сертифицированный преподаватель русского языка как иностранного с 12-летним опытом работы. Моя миссия — сделать изучение русского языка увлекательным, эффективным и доступным для каждого.</p>
+                <p>Я работал в языковых центрах Москвы, преподавал в международных университетах и обучал сотрудников крупных компаний. Понимаю сложности, с которыми сталкиваются иностранцы, и знаю, как их преодолеть.</p>
+                <div class="about-features">
+                    <div class="about-feature"><div class="about-feature-icon">🎓</div><div class="about-feature-text"><h4>Высшее образование</h4><p>МГЛУ им. Мориса Тореза, филологический факультет</p></div></div>
+                    <div class="about-feature"><div class="about-feature-icon">📜</div><div class="about-feature-text"><h4>Сертификация</h4><p>Диплом преподавателя РКИ, сертификат ТРКИ-4</p></div></div>
+                    <div class="about-feature"><div class="about-feature-icon">🌍</div><div class="about-feature-text"><h4>Мультиязычие</h4><p>Говорю на русском, английском, армянском и испанском</p></div></div>
+                    <div class="about-feature"><div class="about-feature-icon">💻</div><div class="about-feature-text"><h4>Онлайн-формат</h4><p>Занятия в Zoom с интерактивными материалами</p></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="section-header reveal">
+            <div class="section-label">Услуги</div>
+            <h2 class="section-title">Что я предлагаю</h2>
+            <p class="section-subtitle">Индивидуальный подход к каждому студенту в зависимости от целей и текущего уровня</p>
+        </div>
+        <div class="services-grid reveal">
+            <div class="service-card"><div class="service-icon">👤</div><h3>Индивидуальные занятия</h3><p>Персональная программа обучения, адаптированная под ваши цели, темп и особенности восприятия языка. Максимум внимания и практики.</p><div class="service-price"><span>2 500 ₽</span><small>за 60 минут</small></div></div>
+            <div class="service-card"><div class="service-icon">👥</div><h3>Групповые курсы</h3><p>Мини-группы до 4 человек для тех, кто хочет практиковаться в диалоге и делиться опытом с единомышленниками.</p><div class="service-price"><span>1 500 ₽</span><small>за 90 минут / чел</small></div></div>
+            <div class="service-card"><div class="service-icon">📝</div><h3>Подготовка к ТРКИ</h3><p>Целенаправленная подготовка к государственному тестированию по русскому языку. Все уровни: от А1 до С2.</p><div class="service-price"><span>3 000 ₽</span><small>за 60 минут</small></div></div>
+            <div class="service-card"><div class="service-icon">💼</div><h3>Бизнес-русский</h3><p>Деловая лексика, переговоры, презентации, деловая переписка. Для профессионалов, работающих в русскоязычной среде.</p><div class="service-price"><span>3 500 ₽</span><small>за 60 минут</small></div></div>
+            <div class="service-card"><div class="service-icon">🎭</div><h3>Разговорный клуб</h3><p>Неформальные встречи для практики разговорной речи. Темы: культура, кино, путешествия, новости, повседневная жизнь.</p><div class="service-price"><span>800 ₽</span><small>за 90 минут</small></div></div>
+            <div class="service-card"><div class="service-icon">📚</div><h3>Курс «Русский интенсив»</h3><p>Ускоренная программа для тех, кто хочет быстро освоить базовый русский. 3 занятия в неделю, видимый результат за месяц.</p><div class="service-price"><span>25 000 ₽</span><small>за курс (12 занятий)</small></div></div>
+        </div>
+    </section>
+
+    <section class="levels" id="levels">
+        <div class="section-header reveal">
+            <div class="section-label">Уровни</div>
+            <h2 class="section-title">От начинающего до продвинутого</h2>
+            <p class="section-subtitle">Определяем ваш текущий уровень и строим путь к совершенству</p>
+        </div>
+        <div class="levels-grid reveal">
+            <div class="level-card"><div class="level-badge">А1</div><h4>Начальный</h4><p>Алфавит, базовая лексика, простые диалоги, представление себя</p></div>
+            <div class="level-card"><div class="level-badge">А2</div><h4>Базовый</h4><p>Повседневное общение, прошедшее время, описание событий</p></div>
+            <div class="level-card"><div class="level-badge">В1</div><h4>Средний</h4><p>Свободное общение на знакомые темы, понимание основного содержания</p></div>
+            <div class="level-card"><div class="level-badge">В2</div><h4>Средне-продвинутый</h4><p>Сложные тексты, спонтанная речь, аргументация, деловое общение</p></div>
+            <div class="level-card"><div class="level-badge">С1</div><h4>Продвинутый</h4><p>Сложная лексика, идиомы, различные стили речи, профессиональные темы</p></div>
+            <div class="level-card"><div class="level-badge">С2</div><h4>Владение в совершенстве</h4><p>Полное понимание, точное выражение мыслей, культурный контекст</p></div>
+            <div class="level-card"><div class="level-badge">📋</div><h4>ТРКИ</h4><p>Подготовка к государственному экзамену: аудирование, чтение, письмо, говорение</p></div>
+            <div class="level-card"><div class="level-badge">💼</div><h4>Бизнес</h4><p>Деловая переписка, переговоры, презентации, профессиональная лексика</p></div>
+        </div>
+    </section>
+
+    <section class="methodology" id="methodology">
+        <div class="section-header reveal">
+            <div class="section-label">Методика</div>
+            <h2 class="section-title">Как проходит обучение</h2>
+            <p class="section-subtitle">Проверенная система, которая работает</p>
+        </div>
+        <div class="methodology-grid reveal">
+            <div class="method-card"><div class="method-number">01</div><div class="method-content"><h4>Диагностика уровня</h4><p>Проводим бесплатное тестирование, определяем текущий уровень и цели обучения. Составляем индивидуальный план.</p></div></div>
+            <div class="method-card"><div class="method-number">02</div><div class="method-content"><h4>Интерактивные материалы</h4><p>Использую современные учебники, видео, подкасты, игры и цифровые платформы. Никакой скуки — только живой язык.</p></div></div>
+            <div class="method-card"><div class="method-number">03</div><div class="method-content"><h4>Говорим с первого урока</h4><p>Коммуникативный метод: 80% времени — устная практика. Преодолеваем языковой барьер и страх ошибок.</p></div></div>
+            <div class="method-card"><div class="method-number">04</div><div class="method-content"><h4>Погружение в культуру</h4><p>Изучаем не только грамматику, но и культурный контекст: фильмы, музыку, традиции, юмор, историю России.</p></div></div>
+            <div class="method-card"><div class="method-number">05</div><div class="method-content"><h4>Регулярная обратная связь</h4><p>После каждого занятия — краткий отчёт о прогрессе, рекомендации по самостоятельной работе и домашние задания.</p></div></div>
+            <div class="method-card"><div class="method-number">06</div><div class="method-content"><h4>Гибкий график</h4><p>Занятия в удобное время, включая вечера и выходные. Возможность переноса при необходимости за 24 часа.</p></div></div>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonials">
+        <div class="section-header reveal">
+            <div class="section-label">Отзывы</div>
+            <h2 class="section-title">Что говорят студенты</h2>
+            <p class="section-subtitle">Истории успеха из разных уголков мира</p>
+        </div>
+        <div class="testimonials-slider reveal">
+            <div class="testimonial-card" id="testimonialCard">
+                <p class="testimonial-text" id="testimonialText">"Артур — лучший преподаватель, с которым я когда-либо занимался. За 6 месяцев я выучил больше, чем за 2 года в языковой школе. Его методика действительно работает, а занятия всегда интересные и динамичные."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">M</div>
+                    <div class="testimonial-info"><h4>Марко Росси <span class="testimonial-flag">🇮🇹</span></h4><p>Италия, изучает русский 8 месяцев</p></div>
+                </div>
+            </div>
+            <div class="testimonial-dots">
+                <div class="dot active" onclick="showTestimonial(0)"></div>
+                <div class="dot" onclick="showTestimonial(1)"></div>
+                <div class="dot" onclick="showTestimonial(2)"></div>
+                <div class="dot" onclick="showTestimonial(3)"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta" id="cta">
+        <div class="cta-content reveal">
+            <h2>Готовы начать?</h2>
+            <p>Первое пробное занятие — бесплатно. Определим ваш уровень, обсудим цели и составим план обучения. Никаких обязательств.</p>
+            <div class="cta-buttons">
+                <a href="https://t.me/artur_rki_teacher" class="btn btn-telegram" target="_blank">Написать в Telegram</a>
+                <a href="https://wa.me/79991234567" class="btn btn-whatsapp" target="_blank">Написать в WhatsApp</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="section-header reveal">
+            <div class="section-label">Контакты</div>
+            <h2 class="section-title">Свяжитесь со мной</h2>
+            <p class="section-subtitle">Отвечаю в течение 2 часов в рабочее время</p>
+        </div>
+        <div class="contact-container reveal">
+            <div class="contact-info">
+                <h3>Давайте начнём ваш путь к русскому языку</h3>
+                <p>Выберите удобный способ связи или заполните форму — я свяжусь с вами в ближайшее время.</p>
+                <div class="contact-item"><div class="contact-icon">📱</div><div><h4>Telegram</h4><p>@artur_rki_teacher</p></div></div>
+                <div class="contact-item"><div class="contact-icon">💬</div><div><h4>WhatsApp</h4><p>+7 (999) 123-45-67</p></div></div>
+                <div class="contact-item"><div class="contact-icon">✉️</div><div><h4>Email</h4><p>artur.amirhanyan@rki.ru</p></div></div>
+                <div class="contact-item"><div class="contact-icon">🌐</div><div><h4>Социальные сети</h4><p>Instagram, VK, YouTube</p></div></div>
+            </div>
+            <div class="contact-form">
+                <form id="contactForm" onsubmit="handleSubmit(event)">
+                    <div class="form-group"><label>Ваше имя</label><input type="text" placeholder="Как к вам обращаться?" required></div>
+                    <div class="form-group"><label>Telegram / WhatsApp</label><input type="text" placeholder="@username или номер телефона" required></div>
+                    <div class="form-group">
+                        <label>Текущий уровень русского</label>
+                        <select required>
+                            <option value="">Выберите уровень</option>
+                            <option value="zero">Нулевой (начинаю с нуля)</option>
+                            <option value="a1">А1 — Начальный</option>
+                            <option value="a2">А2 — Базовый</option>
+                            <option value="b1">В1 — Средний</option>
+                            <option value="b2">В2 — Средне-продвинутый</option>
+                            <option value="c1">С1 — Продвинутый</option>
+                            <option value="c2">С2 — В совершенстве</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Цель обучения</label>
+                        <select required>
+                            <option value="">Выберите цель</option>
+                            <option value="general">Общее изучение языка</option>
+                            <option value="trki">Подготовка к ТРКИ</option>
+                            <option value="business">Бизнес-русский</option>
+                            <option value="travel">Для путешествий</option>
+                            <option value="study">Для учёбы в России</option>
+                            <option value="work">Для работы</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Комментарий</label><textarea placeholder="Расскажите о себе: родной язык, опыт изучения русского, предпочтительное время занятий..."></textarea></div>
+                    <button type="submit" class="form-submit">Отправить заявку</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>Артур <span>Амирханян</span></h3>
+                <p>Преподаватель русского языка как иностранного. Помогаю людям со всего мира говорить по-русски уверенно, красиво и свободно.</p>
+                <div class="footer-social">
+                    <a href="https://t.me/artur_rki_teacher" target="_blank" title="Telegram">✈️</a>
+                    <a href="https://wa.me/79991234567" target="_blank" title="WhatsApp">📱</a>
+                    <a href="#" title="Instagram">📷</a>
+                    <a href="#" title="VK">🇻🇰</a>
+                    <a href="#" title="YouTube">▶️</a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Навигация</h4>
+                <ul>
+                    <li><a href="#about">Обо мне</a></li>
+                    <li><a href="#services">Услуги</a></li>
+                    <li><a href="#levels">Уровни</a></li>
+                    <li><a href="#methodology">Методика</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Услуги</h4>
+                <ul>
+                    <li><a href="#services">Индивидуальные занятия</a></li>
+                    <li><a href="#services">Групповые курсы</a></li>
+                    <li><a href="#services">Подготовка к ТРКИ</a></li>
+                    <li><a href="#services">Бизнес-русский</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Контакты</h4>
+                <ul>
+                    <li><a href="https://t.me/artur_rki_teacher" target="_blank">Telegram</a></li>
+                    <li><a href="https://wa.me/79991234567" target="_blank">WhatsApp</a></li>
+                    <li><a href="mailto:artur.amirhanyan@rki.ru">Email</a></li>
+                    <li><a href="#contact">Форма заявки</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>© 2026 Артур Амирханян. Все права защищены. | Сайт создан для преподавателя РКИ</p></div>
+    </footer>
+
+    <div class="floating-buttons">
+        <a href="https://t.me/artur_rki_teacher" class="floating-btn telegram" data-label="Telegram" target="_blank">✈️</a>
+        <a href="https://wa.me/79991234567" class="floating-btn whatsapp" data-label="WhatsApp" target="_blank">💬</a>
+    </div>
+
+    <script>
+        window.addEventListener('load', () => { setTimeout(() => { document.getElementById('preloader').classList.add('hidden'); }, 1500); });
+        window.addEventListener('scroll', () => { const navbar = document.getElementById('navbar'); if (window.scrollY > 50) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled'); });
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => { document.getElementById('navLinks').classList.toggle('active'); });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); document.getElementById('navLinks').classList.remove('active'); } }); });
+        const revealObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); }); }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+        const testimonials = [
+            { text: '"Артур — лучший преподаватель, с которым я когда-либо занимался. За 6 месяцев я выучил больше, чем за 2 года в языковой школе. Его методика действительно работает, а занятия всегда интересные и динамичные."', author: 'Марко Росси', country: '🇮🇹', info: 'Италия, изучает русский 8 месяцев', avatar: 'M' },
+            { text: '"Я готовился к ТРКИ-2 с Артуром и сдал экзамен на отлично. Он знает все тонкости тестирования и умеет объяснить сложную грамматику простым языком. Очень рекомендую!"', author: 'Ли Вэй', country: '🇨🇳', info: 'Китай, сдал ТРКИ-2 за 4 месяца', avatar: 'L' },
+            { text: '"Работаю в российской IT-компании и нужен был бизнес-русский. Артур составил программу именно под мои задачи: переговоры, презентации, деловая переписка. Теперь я чувствую себя уверенно на совещаниях."', author: 'Ахмед Аль-Фарис', country: '🇦🇪', info: 'ОАЭ, работает в Москве 2 года', avatar: 'A' },
+            { text: '"Начинала с нуля и боялась, что русский слишком сложный. Артур сделал процесс обучения таким увлекательным, что я жду каждого занятия. Через год я уже смотрю русские фильмы без субтитров!"', author: 'София Мартинес', country: '🇪🇸', info: 'Испания, изучает русский 14 месяцев', avatar: 'S' }
+        ];
+        let currentTestimonial = 0;
+        function showTestimonial(index) { currentTestimonial = index; const t = testimonials[index]; document.getElementById('testimonialText').textContent = t.text; document.querySelector('.testimonial-info h4').innerHTML = t.author + ' <span class="testimonial-flag">' + t.country + '</span>'; document.querySelector('.testimonial-info p').textContent = t.info; document.querySelector('.testimonial-avatar').textContent = t.avatar; document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === index)); }
+        setInterval(() => { showTestimonial((currentTestimonial + 1) % testimonials.length); }, 5000);
+        function handleSubmit(e) { e.preventDefault(); alert('Спасибо за заявку! Я свяжусь с вами в ближайшее время в Telegram или WhatsApp.\n\nДля немедленной связи:\nTelegram: @artur_rki_teacher\nWhatsApp: +7 (999) 123-45-67'); document.getElementById('contactForm').reset(); }
+    </script>
+</body>
+</html>
